@@ -1,24 +1,23 @@
-# 使用 Node.js 14 作为基础镜像
-FROM node:20
+# Step 1: Use the official Node.js 18 image as the base image
+FROM node:18-alpine
 
-# 设置工作目录
-WORKDIR /app
+# Step 2: Set the working directory inside the image
+WORKDIR /usr/src/app
 
-# 复制整个应用到容器中
-COPY ./ /app
+# Step 3: Copy package.json and package-lock.json (or yarn.lock)
+COPY package*.json ./
 
+# Step 4: Install dependencies
+RUN npm install
 
-ARG NEXT_PUBLIC_OPEN_AI_API_KEY
-ENV NEXT_PUBLIC_OPEN_AI_API_KEY $NEXT_PUBLIC_OPEN_AI_API_KEY
+# Step 5: Copy the rest of the source code
+COPY . .
 
-ARG OPENAI_PROXY_URL
-ENV OPENAI_PROXY_URL $OPENAI_PROXY_URL
+# Step 6: Build the Next.js application
+RUN npm run build
 
-# 安装依赖
-RUN npm i -g pnpm
-
-# 暴露 3000 端口
+# Step 7: Expose the port Next.js runs on
 EXPOSE 3000
 
-# 启动应用
-CMD ["sh", "-c", "pnpm i && pnpm build && pnpm start"]
+# Step 8: Define the command to run your app using CMD
+CMD [ "npm", "start" ]

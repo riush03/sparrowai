@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+.yarn/install-state.gz
 
 # testing
 /coverage
@@ -23,7 +24,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
 
 # local env files
 .env*.local
@@ -34,15 +34,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-backend
 
-TOKEN.ts
-
-.env
-.vscode
-
-public/service-worker.js
-xflow-docs
-!draw-app/draw
-public/service-worker.js
-server/events/google
+.env.production

@@ -1,47 +1,62 @@
-const withOffline = require('next-offline');
-const path = require('path');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
+const { patchWebpackConfig } = require("next-global-css");
 
 const rewrites = async () => {
-    const ret = [];
+  const ret = [
+    {
+      source: '/sandpack',
+      destination: '/sandpack/index.html',
+    },
+    {
+      source: "/plausible/js/script.js",
+      destination: "https://plausible.io/js/script.js",
+    },
+    {
+      source: "/plausible/api/event",
+      destination: "https://plausible.io/api/event",
+    },
+  ];
 
-    return {
-        beforeFiles: ret,
-    };
+  return {
+      beforeFiles: ret,
+  };
 };
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    transpilePackages: [],
-    reactStrictMode: true,
-    publicRuntimeConfig: {
-        apiPath: '/api/',
-        backendOrigin: process.env.NEXT_PUBLIC_BACKEND_URL,
-    },
-    rewrites,
-    eslint: {
-        ignoreDuringBuilds: true,
-    },
-    typescript: {
-        ignoreBuildErrors: true,
-    },
-    generateSw: false,
-    // dontAutoRegisterSw: true,
-    generateInDevMode: true,
-    workboxOpts: {
-        swSrc: './serviceWorker.js',
-        mode: process.env.NODE_ENV,
-        swDest: path.resolve(__dirname, './public/service-worker.js'),
-        maximumFileSizeToCacheInBytes: 7 * 1024 * 1024,
-        include: [
-            _ => {
-                if (/^static\//.test(_.asset.name) && !/\[.*\]/.test(_.asset.name))
-                    return /^static\//.test(_.asset.name) && !/\[.*\]/.test(_.asset.name);
-            },
-        ],
-    },
-    experimental: {
-        proxyTimeout: 1000 * 120,
-    },
-};
+  reactStrictMode: true,
+  eslint: {
+      ignoreDuringBuilds: true,
+  },
+  rewrites,
+  typescript: {
+      ignoreBuildErrors: true,
+  },
+  publicRuntimeConfig: {
+      apiPath: '/api/',
+      backendOrigin: process.env.NEXT_PUBLIC_BACKEND_URL,
+  },
+  webpack: (config, options) => {
 
-module.exports = withOffline(nextConfig);
+    // allow global CSS to be imported from within node_modules
+    // see also:
+    //   - https://nextjs.org/docs/messages/css-npm
+    //   - https://github.com/vercel/next.js/discussions/27953
+    patchWebpackConfig(config, options);
+    
+    config.module.rules.push({ test: /\.ttf$/, type: "asset/resource" });
+    // when `isServer` is `true`, building (`next build`) fails with the following error:
+    // "Conflict: Multiple assets emit different content to the same filename ../main.js.nft.json"
+    if (!options.isServer) {
+      config.plugins.push(
+        new MonacoWebpackPlugin({
+          languages: ["javascript", "typescript", "html"],
+          filename: 'static/[name].worker.js',
+        })
+      );
+    }
+
+    return config;
+  },
+}
+
+module.exports = nextConfig
