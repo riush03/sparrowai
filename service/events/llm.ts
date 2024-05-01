@@ -1,5 +1,3 @@
-import OpenAI from 'openai';
-
 
 import {
   GoogleGenerativeAI,
@@ -7,7 +5,7 @@ import {
   HarmCategory,
 } from "@google/generative-ai";
 
-// 功能函数，用于从base64数据URL中提取MIME类型和纯base64数据部分
+
 function extractMimeAndBase64(dataUrl: string) {
   const matches = dataUrl.match(/^data:(.+);base64,(.*)$/);
   if (!matches || matches.length !== 3) {
@@ -16,23 +14,23 @@ function extractMimeAndBase64(dataUrl: string) {
   return { mimeType: matches[1], base64Data: matches[2] };
 }
 
-// 转换函数
+
 function transformData(data: Record<any, any>[]) {
   const parts = [];
 
-  // 遍历原始数据，合并文本内容
+ 
   for (const item of data) {
     if (item.content) {
       if (typeof item.content === "string") {
-        // 对于系统角色的文本内容
+        
         parts.push({ text: item.content });
       } else if (Array.isArray(item.content)) {
-        // 对于用户角色的内容数组
+        
         for (const part of item.content) {
           if (part.type === "text") {
             parts.push({ text: part.text });
           } else if (part.type === "image_url") {
-            // 提取MIME类型和base64数据
+    
             const { mimeType, base64Data } = extractMimeAndBase64(
               part.image_url.url
             );
@@ -48,7 +46,7 @@ function transformData(data: Record<any, any>[]) {
     }
   }
 
-  // 返回新的数据结构，所有文本和图像都合并到一个用户角色中
+
   return [
     {
       role: "user",
@@ -76,7 +74,7 @@ const safetySettings = [
   },
 ];
 async function useGeminiResponse([messages, callback, params]: Parameters<
-  typeof streamingOpenAIResponses
+  typeof streamingGeminiResponses
 >) {
   let genAI = new GoogleGenerativeAI(
     params.geminiApiKey || process.env["GEMINI_API_KEY"]
@@ -122,15 +120,13 @@ async function useGeminiResponse([messages, callback, params]: Parameters<
 }
 
 
-export async function streamingOpenAIResponses(
+export async function streamingGeminiResponses(
   messages: any,
   callback: {
     (content: string, event?: string | undefined): void;
     (arg0: string, arg1: string | undefined): void;
   },
   params: {
-    openAiApiKey: any;
-    openAiBaseURL: any;
     llm: string;
     geminiApiKey: any;
   }
@@ -141,31 +137,5 @@ export async function streamingOpenAIResponses(
     return full_response;
   }
 
-  if (!params.openAiApiKey) {
-    callback('No openai key, set it', 'error');
-    return '';
-  }
-  const openai = new OpenAI({
-    apiKey: params.openAiApiKey || process.env['OPENAI_API_KEY'], // defaults to process.env["OPENAI_API_KEY"]
-    baseURL:
-      params.openAiBaseURL ||
-      process.env['OPENAI_BASE_URL'] ||
-      'https://api.openai.com/v1',
-  });
 
-  const stream = await openai.chat.completions.create({
-    model: 'gpt-4-vision-preview',
-    temperature: 0,
-    max_tokens: 4096,
-    messages,
-    stream: true,
-  });
-  let full_response = '';
-  for await (const chunk of stream) {
-    const content = chunk.choices[0]?.delta?.content || '';
-    full_response += content;
-    callback(content);
-  }
-
-  return full_response;
 }

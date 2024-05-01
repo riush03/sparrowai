@@ -1,5 +1,5 @@
 import { assemblePrompt } from './prompts';
-import { streamingOpenAIResponses } from './llm';
+import { streamingGeminiResponses } from './llm';
 import { mockComletion } from './mock';
 
 export interface IGenerateCodeParams {
@@ -98,7 +98,7 @@ export async function streamGenerateCode(
     });
   } else {
     try {
-      completion = await streamingOpenAIResponses(
+      completion = await streamingGeminiResponses(
         prompt_messages,
         (content: string, event?: string) => {
           if (event === 'error') {
@@ -114,8 +114,6 @@ export async function streamGenerateCode(
           }
         },
         {
-          openAiApiKey: params.openAiApiKey,
-          openAiBaseURL: params.openAiBaseURL,
           llm: params.llm, // 'Gemini'
           geminiApiKey: params.geminiApiKey,
         },
@@ -124,7 +122,7 @@ export async function streamGenerateCode(
       console.log(e);
       noticeHost({
         type: 'error',
-        value: 'openAI request error!',
+        value: 'Gemini request error!',
       });
     }
   }
