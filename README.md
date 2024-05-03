@@ -19,14 +19,19 @@ By using Gemini technologies to generate highly available code, Sparrowai suppor
 
 
 You can clone it and run it locally.
+
 ```bash
+git clone https://github.com/riush03/sparrowai.git
+
+cd sparrowai
+
 npm run dev
 ```
 
 >Tostart using first add your Gemini API key in the settings section:
   
   https://github.com/riush03/sparrowai/blob/main/showcase/settings.png
-  
+
 ## 🛠 Setting
 Supports  Gemini 
 
