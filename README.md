@@ -31,5 +31,4 @@ Gemini ：
 
 
 
-> if this project is helpful to you, buy me a coffee.
 
