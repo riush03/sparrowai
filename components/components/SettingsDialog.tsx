@@ -85,7 +85,7 @@ function SettingsDialog({ settings, setSettings, openDialog, setOpenDialog }: Pr
             </RadioGroup>
           </div>
         
-                <p className="text-rose-500">The output effect is not good and it will not be maintained for the time being.</p>
+                
                 <Label htmlFor="openai-api-key">
                   <div>Gemini API key</div>
                   <div className="font-light mt-2 leading-relaxed">
