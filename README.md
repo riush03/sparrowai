@@ -22,6 +22,11 @@ You can clone it and run it locally.
 ```bash
 npm run dev
 ```
+
+>Tostart using first add your Gemini API key in the settings section:
+  
+  https://github.com/riush03/sparrowai/blob/main/showcase/settings.png
+  
 ## 🛠 Setting
 Supports  Gemini 
 
