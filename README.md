@@ -30,7 +30,7 @@ npm run dev
 
 >Tostart using first add your Gemini API key in the settings section:
   
-   https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjdrlVbhxwFnZaG05pK9SSwS8ZMFYezYILHd4u4UK2ln4Nkz7P1RBSU4f-nQusmagpxWG-1-Pq5djjWBpMAqRnc0OTYLHIQc-33FDJ0FLDqO7JPBmrHbUX5WWlYk4zVBkS7jOAId6ilL-WUmr_fLn-cnzphEezzO3ih6FQZEbeSy8BA90HsK7PVaZzT-Yk/w562-h261/settings.png
+   ![settings](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjdrlVbhxwFnZaG05pK9SSwS8ZMFYezYILHd4u4UK2ln4Nkz7P1RBSU4f-nQusmagpxWG-1-Pq5djjWBpMAqRnc0OTYLHIQc-33FDJ0FLDqO7JPBmrHbUX5WWlYk4zVBkS7jOAId6ilL-WUmr_fLn-cnzphEezzO3ih6FQZEbeSy8BA90HsK7PVaZzT-Yk/w562-h261/settings.png)
 
 ## 🛠 Setting
 Supports  Gemini 
